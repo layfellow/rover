@@ -58,12 +58,15 @@ if __name__ == "__main__":
 	if len(argv) > 1 and isfile(argv[1]):
 		with open(argv[1]) as input:
 			try:
-				if line := input.readline():
+				line = input.readline()
+				if line:
 					rightmost, uppermost = map(lambda v: int(v), line.split())
 				others = []
-				while line := input.readline().upper():
+				line = input.readline().upper()
+				while line:
 					rover = MarsRover(*land(line, rightmost, uppermost), rightmost, uppermost)
-					if line := input.readline().upper():
+					line = input.readline().upper()
+					if line:
 						for c in line:
 							if c == 'M':
 								rover.move(others)
@@ -73,5 +76,6 @@ if __name__ == "__main__":
 								rover.right()
 						print(rover.x, rover.y, rover.heading)
 						others.append(rover)
+					line = input.readline().upper()
 			except:
 				houston("Error on input line: %s, %s" % (line.rstrip(), exc_info()[1]))
