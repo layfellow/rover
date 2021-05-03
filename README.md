@@ -74,7 +74,7 @@ I created a `MarsRover` class which is an abstraction of the rover. The construc
 
 A rover instance has methods `left()` and `right()` to spin the rover in place, as well as a `move()` method to move forward one grid point. Notice `move()` has an optional `others` parameter: this is an *array of `MarsRover` objects*, containing references to *all the other rovers roaming on the plateau*. This data is necessary to implement (optional) collision detection — i.e., a rover won’t move to a position occupied by another rover.
 
-I designed `MarsRover` around the assumption the rover will try to preserve its integrity — think [Asimov’s Third Law](https://en.wikipedia.org/wiki/Three_Laws_of_Robotics) — so it cannot be forced to fall off a cliff (go beyond a border) or head-on crash onto another rover (move to an already occupied position). The methods that implement these checks are `inside()` and `crash()` respectively.
+I designed `MarsRover` around the assumption the rover will try to preserve its own integrity, and therefore will try to avoid falling off a cliff (go beyond a border) or crash head-on onto another rover (move to an already occupied position). The methods that implement these checks are `inside()` and `crash()` respectively.
 
 I also assumed all rovers have successfully landed on the plateau, and therefore no rover crash-landed onto another one. This is why the `MarsRover` constructor doesn’t check whether the initial coordinates are already occupied by another rover.
 
