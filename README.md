@@ -83,3 +83,5 @@ The `houston()` method is an abstraction to communicate error conditions uplink 
 The input text parser was implemented in `__main__`. It has some defensive features to account for common errors. The grid and coordinate initialization text lines require integers and  valid case-insensitive heading directives, otherwise an error is signaled to Houston and processing stops (i.e., a fatal error). The movement lines simply ignore any non-valid directive and continue without signaling errors.
 
 Invalid initialization directives are signaled as fatal errors because I assumed these are known values, predefined by Mission Control. They’re critical for a correct operation, without which the rover cannot safely operate. Movement directives, however, are probably sent as a continuously changing string downlink from Earth, and some basic error correction capabilities are desirable.
+
+Unit tests are implemented in `test.py`. These cover all common operations, as well as a couple of boundary conditions.
