@@ -53,7 +53,7 @@ Expected Output:
 
 ## The solution
 
-The solution code requires Python 3.6 or higher. No other libraries other than the standard library are used. To install Python 3:
+This solution requires Python 3.6 or higher; no dependencies other than the standard library. To install Python 3:
 
 - On Ubuntu run: `sudo apt install python3`
 - On Fedora run: `sudo dnf install python3`
