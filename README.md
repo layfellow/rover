@@ -1,4 +1,11 @@
-# A Python 3 solution to the Mars Rover programming problem
+# A solution to the Mars Rover programming problem
+
+Implemented in Python 3.
+
+Table of contents
+
+1. [The problem](#the-problem)
+2. [The solution](#the-solution)
 
 ## The problem
 
@@ -6,7 +13,7 @@ A squad of robotic rovers are to be landed by NASA on a plateau on Mars. This pl
 
 A rover’s position and location is represented by a combination of `x` and `y` coordinates and a letter representing one of the four cardinal compass points. The plateau is divided up into a grid to simplify navigation. An example position might be `0, 0, N`, which means the rover is in the bottom left corner and facing North.
 
-In order to control a rover, NASA sends a simple string of letters. The possible letters are ‘L’, ‘R’ and ‘M’. ‘L’ and ‘R’ makes the rover spin 90 degrees left or right respectively, without moving from its current spot.
+In order to control a rover, NASA sends a simple string of letters. The possible letters are ‘L’, ‘R’ and ‘M’. ‘L’ and ‘R’ makes the rover spin 90 degrees left or right respectively, without moving from its current spot. 
 ‘M’ means move forward one grid point, and maintain the same heading.
 
 Assume that the square directly North from `(x, y)` is `(x, y + 1)`.
@@ -43,3 +50,36 @@ Expected Output:
 1 3 N
 5 1 E
 ```
+
+## The solution
+
+The solution code requires Python 3.6 or higher. No other libraries other than the standard library are used. To install Python 3:
+
+- On Ubuntu run: `sudo apt install python3`
+- On Fedora run: `sudo dnf install python3`
+- On macOS install [Homebrew](https://brew.sh/) then run: `brew install python3`
+- On Windows 10 install [Chocolatey](https://chocolatey.org/) then run: `choco install python3`
+
+To execute the solution, run:
+
+    python3 rover.py INPUT
+
+To execute unit tests, run:
+
+    python3 -m unittest -v test.py
+
+### Design and assumptions
+
+I created a `MarsRover` class which is an abstraction of the rover. The constructor initializes an instance with three basic properties `x`, `y` and `heading`, containing the initial coordinates and the heading. The constructor also takes `rightmost` and `uppermost` properties, which tell the upper-right coordinates of the Martian plateau. For example, a pair `3,6` for these properties would indicate a rectangular plateau of 4x7 in size. The reason I'm providing the grid size is to make the rover ‘aware’ of the borders — it will ignore movement instructions to go beyond a border.
+
+A rover instance has methods `left()` and `right()` to spin the rover in place, as well as a `move()` method to move forward one grid point. Notice `move()` has an optional `others` parameter: this is an *array of `MarsRover` objects*, containing references to *all the other rovers roaming on the plateau*. This data is necessary to implement (optional) collision detection — i.e., a rover won’t move to a position occupied by another rover.
+
+I designed `MarsRover` around the assumption the rover will try to preserve its integrity — think [Asimov’s Third Law](https://en.wikipedia.org/wiki/Three_Laws_of_Robotics) — so it cannot be forced to fall off a cliff (go beyond a border) or head-on crash onto another rover (move to an already occupied position). The methods that implement these checks are `inside()` and `crash()` respectively.
+
+I also assumed all rovers have successfully landed on the plateau, and therefore no rover crash-landed onto another one. This is why the `MarsRover` constructor doesn’t check whether the initial coordinates are already occupied by another rover.
+
+The `houston()` method is an abstraction to communicate error conditions uplink to Earth.
+
+The input text parser was implemented in `__main__`. It has some defensive features to account for common errors. The grid and coordinate initialization text lines require integers and  valid case-insensitive heading directives, otherwise an error is signaled to Houston and processing stops (i.e., a fatal error). The movement lines simply ignore any non-valid directive and continue without signaling errors.
+
+Invalid initialization directives are signaled as fatal errors because I assumed these are known values, predefined by Mission Control. They’re critical for a correct operation, without which the rover cannot safely operate. Movement directives, however, are probably sent as a continuously changing string downlink from Earth, and some basic error correction capabilities are desirable.
